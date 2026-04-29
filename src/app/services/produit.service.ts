@@ -12,7 +12,7 @@ const httpOptions = {
   providedIn: 'root',
 })
 export class ProduitService {
-  apiURL: string = 'http://localhost:8080/produits/api';
+  apiURL: string = 'http://localhost:8081/produits/api';
   produits: Produit[]; //un tableau de Produit
   produit!: Produit;
   // categories: Categorie[];
@@ -24,32 +24,32 @@ export class ProduitService {
     // ];
 
     this.produits = [
-      {
-        idProduit: 1,
-        nomProduit: 'PC Asus',
-        prixProduit: 3000.6,
-        dateCreation: new Date('01/14/2011'),
-        categorie: { idCat: 1, nomCat: 'PC' },
-      },
-      {
-        idProduit: 2,
-        nomProduit: 'Imprimante Epson',
-        prixProduit: 450,
-        dateCreation: new Date('12/17/2010'),
-        categorie: { idCat: 2, nomCat: 'Imprimante' },
-      },
-      {
-        idProduit: 3,
-        nomProduit: 'Tablette Samsung',
-        prixProduit: 900.123,
-        dateCreation: new Date('02/20/2020'),
-        categorie: { idCat: 1, nomCat: 'PC' },
-      },
+      // {
+      //   idProduit: 1,
+      //   nomProduit: 'PC Asus',
+      //   prixProduit: 3000.6,
+      //   dateCreation: new Date('01/14/2011'),
+      //   categorie: { idCat: 1, nomCat: 'PC' },
+      // },
+      // {
+      //   idProduit: 2,
+      //   nomProduit: 'Imprimante Epson',
+      //   prixProduit: 450,
+      //   dateCreation: new Date('12/17/2010'),
+      //   categorie: { idCat: 2, nomCat: 'Imprimante' },
+      // },
+      // {
+      //   idProduit: 3,
+      //   nomProduit: 'Tablette Samsung',
+      //   prixProduit: 900.123,
+      //   dateCreation: new Date('02/20/2020'),
+      //   categorie: { idCat: 1, nomCat: 'PC' },
+      // },
     ];
   }
 
-  listeProduits(): Produit[] {
-    return this.produits;
+  listeProduits(): Observable<Produit[]> {
+    return this.http.get<Produit[]>(this.apiURL);
   }
 
   ajouterProduit(prod: Produit) {
