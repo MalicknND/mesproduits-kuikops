@@ -14,7 +14,6 @@ const httpOptions = {
 export class ProduitService {
   apiURL: string = 'http://localhost:8081/produits/api';
   produits: Produit[]; //un tableau de Produit
-  produit!: Produit;
   // categories: Categorie[];
 
   constructor(private http: HttpClient) {
@@ -71,8 +70,7 @@ export class ProduitService {
   }
 
   consulterProduit(id: number): Produit {
-    this.produit = this.produits.find((p) => p.idProduit == id)!;
-    return this.produit;
+    return this.produits.find((p) => p.idProduit == id)!;
   }
 
   trierProduits() {
