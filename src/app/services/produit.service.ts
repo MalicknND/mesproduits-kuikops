@@ -81,9 +81,9 @@ export class ProduitService {
     return this.http.put<Produit>(this.apiURL, prod, httpOptions);
   }
 
-  // listeCategories(): Categorie[] {
-  //   return this.categories;
-  // }
+  listeCategories(): Observable<Categorie[]> {
+    return this.http.get<Categorie[]>(`${this.apiURL}/cat`);
+  }
 
   // consulterCategorie(id: number): Categorie {
   //   return this.categories.find((cat) => cat.idCat == id)!;

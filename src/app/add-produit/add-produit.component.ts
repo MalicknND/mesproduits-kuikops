@@ -25,10 +25,16 @@ export class AddProduitComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // this.categories = this.produitService.listeCategories();
+    // permet de récupérer la liste des catégories à partir du service et de l'afficher dans la page add-produit
+    this.produitService.listeCategories().subscribe((cats) => {
+      this.categories = cats;
+    });
   }
 
   addProduit() {
+    this.newProduit.categorie = this.categories.find(
+      (cat) => cat.idCat == this.newIdCat,
+    )!;
     this.produitService.ajouterProduit(this.newProduit).subscribe((prod) => {
       console.log(prod);
       this.router.navigate(['produits']);
