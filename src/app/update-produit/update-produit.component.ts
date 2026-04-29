@@ -15,7 +15,6 @@ import { Categorie } from '../model/categorie.model';
 })
 export class UpdateProduitComponent implements OnInit {
   currentProduit = new Produit();
-
   categories!: Categorie[];
   updatedCatId!: number;
 
@@ -27,17 +26,16 @@ export class UpdateProduitComponent implements OnInit {
 
   ngOnInit(): void {
     // this.categories = this.produitService.listeCategories();
-    this.currentProduit = this.produitService.consulterProduit(
-      this.activatedRoute.snapshot.params['id'],
-    );
-    this.updatedCatId = this.currentProduit.categorie.idCat;
+    this.produitService
+      .consulterProduit(this.activatedRoute.snapshot.params['id'])
+      .subscribe((prod) => {
+        this.currentProduit = prod;
+      });
   }
 
   updateProduit() {
-    // this.currentProduit.categorie = this.produitService.consulterCategorie(
-    //   this.updatedCatId,
-    // );
-    this.produitService.updateProduit(this.currentProduit);
-    this.router.navigate(['produits']);
+    this.produitService.updateProduit(this.currentProduit).subscribe(() => {
+      this.router.navigate(['produits']);
+    });
   }
 }

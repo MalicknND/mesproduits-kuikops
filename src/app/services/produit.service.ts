@@ -60,8 +60,9 @@ export class ProduitService {
     return this.http.delete(url, httpOptions);
   }
 
-  consulterProduit(id: number): Produit {
-    return this.produits.find((p) => p.idProduit == id)!;
+  consulterProduit(id: number): Observable<Produit> {
+    const url = `${this.apiURL}/${id}`;
+    return this.http.get<Produit>(url);
   }
 
   trierProduits() {
@@ -76,11 +77,8 @@ export class ProduitService {
     });
   }
 
-  updateProduit(p: Produit) {
-    console.log('hello');
-    // this.supprimerProduit(p);
-    // this.ajouterProduit(p);
-    // this.trierProduits();
+  updateProduit(prod: Produit): Observable<Produit> {
+    return this.http.put<Produit>(this.apiURL, prod, httpOptions);
   }
 
   // listeCategories(): Categorie[] {
