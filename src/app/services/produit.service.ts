@@ -51,8 +51,8 @@ export class ProduitService {
     return this.http.get<Produit[]>(this.apiURL);
   }
 
-  ajouterProduit(prod: Produit) {
-    this.produits.push(prod);
+  ajouterProduit(prod: Produit): Observable<Produit> {
+    return this.http.post<Produit>(this.apiURL, prod, httpOptions);
   }
 
   supprimerProduit(prod: Produit) {
