@@ -18,6 +18,10 @@ export class ProduitsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.chargerProduits();
+  }
+
+  chargerProduits() {
     this.produitService.listeProduits().subscribe((prods) => {
       console.log(prods);
       this.produits = prods;
@@ -27,6 +31,10 @@ export class ProduitsComponent implements OnInit {
   supprimerProduit(p: Produit) {
     // console.log(p);
     let conf = confirm('Etes-vous sûr ?');
-    if (conf) this.produitService.supprimerProduit(p);
+    if (conf)
+      this.produitService.supprimerProduit(p.idProduit).subscribe(() => {
+        console.log('produit supprimé');
+        this.chargerProduits();
+      });
   }
 }

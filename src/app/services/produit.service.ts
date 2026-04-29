@@ -55,18 +55,9 @@ export class ProduitService {
     return this.http.post<Produit>(this.apiURL, prod, httpOptions);
   }
 
-  supprimerProduit(prod: Produit) {
-    //supprimer le produit prod du tableau produits
-    const index = this.produits.indexOf(prod, 0);
-    if (index > -1) {
-      this.produits.splice(index, 1);
-    }
-    //ou Bien
-    /*  this.produits.forEach((cur, index) => {
-          if(prod.idProduit === cur.idProduit) {
-                this.produits.splice(index, 1);  
-             }
-       }); */
+  supprimerProduit(id: number) {
+    const url = `${this.apiURL}/${id}`;
+    return this.http.delete(url, httpOptions);
   }
 
   consulterProduit(id: number): Produit {
@@ -86,10 +77,10 @@ export class ProduitService {
   }
 
   updateProduit(p: Produit) {
-    // console.log(p);
-    this.supprimerProduit(p);
-    this.ajouterProduit(p);
-    this.trierProduits();
+    console.log('hello');
+    // this.supprimerProduit(p);
+    // this.ajouterProduit(p);
+    // this.trierProduits();
   }
 
   // listeCategories(): Categorie[] {
