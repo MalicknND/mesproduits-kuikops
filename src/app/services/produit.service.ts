@@ -1,20 +1,27 @@
 import { Injectable } from '@angular/core';
 import { Produit } from '../model/produit.model';
 import { Categorie } from '../model/categorie.model';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
+const httpOptions = {
+  headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+};
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProduitService {
+  apiURL: string = 'http://localhost:8080/produits/api';
   produits: Produit[]; //un tableau de Produit
   produit!: Produit;
-  categories: Categorie[];
+  // categories: Categorie[];
 
-  constructor() {
-    this.categories = [
-      { idCat: 1, nomCat: 'PC' },
-      { idCat: 2, nomCat: 'Imprimante' },
-    ];
+  constructor(private http: HttpClient) {
+    // this.categories = [
+    //   { idCat: 1, nomCat: 'PC' },
+    //   { idCat: 2, nomCat: 'Imprimante' },
+    // ];
 
     this.produits = [
       {
@@ -87,14 +94,11 @@ export class ProduitService {
     this.trierProduits();
   }
 
+  // listeCategories(): Categorie[] {
+  //   return this.categories;
+  // }
 
-  listeCategories():Categorie[] {
-    return this.categories;
-  }
-
-consulterCategorie(id:number): Categorie{    
-        return this.categories.find(cat => cat.idCat  == id)!;
-         }
-
-
+  // consulterCategorie(id: number): Categorie {
+  //   return this.categories.find((cat) => cat.idCat == id)!;
+  // }
 }

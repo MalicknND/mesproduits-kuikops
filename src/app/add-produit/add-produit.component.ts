@@ -9,36 +9,29 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-add-produit',
   standalone: true,
-  imports: [CommonModule,FormsModule],
-  templateUrl: './add-produit.component.html'
+  imports: [CommonModule, FormsModule],
+  templateUrl: './add-produit.component.html',
 })
 export class AddProduitComponent implements OnInit {
-
   newProduit = new Produit();
-  message! : string;
-  categories! : Categorie[];
-  newIdCat! : number;
-  newCategorie! : Categorie;
+  message!: string;
+  categories!: Categorie[];
+  newIdCat!: number;
+  newCategorie!: Categorie;
 
-
-  constructor(private produitService: ProduitService,
-              private router :Router
-   ) {}
-
-
+  constructor(
+    private produitService: ProduitService,
+    private router: Router,
+  ) {}
 
   ngOnInit() {
-    this.categories = this.produitService.listeCategories();
+    // this.categories = this.produitService.listeCategories();
   }
 
-
-
-  addProduit(){this.newCategorie = this.produitService.consulterCategorie(this.newIdCat);
+  addProduit() {
+    // this.newCategorie = this.produitService.consulterCategorie(this.newIdCat);
     this.newProduit.categorie = this.newCategorie;
     this.produitService.ajouterProduit(this.newProduit);
     this.router.navigate(['produits']);
-
   }
-
-
 }
