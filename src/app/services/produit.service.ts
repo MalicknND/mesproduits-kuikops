@@ -3,7 +3,8 @@ import { Produit } from '../model/produit.model';
 import { Categorie } from '../model/categorie.model';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../environments/environment';
+import type { CategorieWrapper } from '../model/categorieWrapped.model';
+import { environment } from '../../environments/environment.development';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
@@ -52,8 +53,13 @@ export class ProduitService {
     return this.http.put<Produit>(environment.apiURL, prod, httpOptions);
   }
 
-  listeCategories(): Observable<Categorie[]> {
-    return this.http.get<Categorie[]>(`${environment.apiURL}/cat`);
+  // listeCategories(): Observable<Categorie[]> {
+  //   return this.http.get<Categorie[]>(`${environment.apiURL}/cat`);
+  // }
+
+  // la nouvelle version de la méthode listeCategories() qui utilise CategorieWrapper pour récupérer la liste des catégories à partir de l'API REST (Spring Data RESR)
+  listeCategories(): Observable<CategorieWrapper> {
+    return this.http.get<CategorieWrapper>(environment.apiURLCat);
   }
 
   // consulterCategorie(id: number): Categorie {
