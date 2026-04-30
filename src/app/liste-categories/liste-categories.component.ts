@@ -13,11 +13,22 @@ import { CommonModule } from '@angular/common';
 })
 export class ListeCategoriesComponent implements OnInit {
   categories!: Categorie[];
-  updatedCat: Categorie = { idCat: 0, nomCat: '' };
+  updatedCat: Categorie = { idCat: null, nomCat: '' };
 
   constructor(private produitService: ProduitService) {}
 
   ngOnInit(): void {
+    this.chargerCategories();
+  }
+
+  categorieUpdated(categorie: Categorie): void {
+    this.produitService.ajouterCategorie(categorie).subscribe((cat) => {
+      console.log(cat);
+      this.chargerCategories();
+    });
+  }
+
+  chargerCategories() {
     this.produitService.listeCategories().subscribe((cats) => {
       console.log(cats);
       this.categories = cats._embedded.categories;

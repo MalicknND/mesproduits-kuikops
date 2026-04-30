@@ -1,4 +1,4 @@
 export class Categorie {
-    idCat! : number; // ou idCat? : number;
-    nomCat! : string;
+  idCat!: number | null; // ou idCat? : number;
+  nomCat!: string;
 }

@@ -67,4 +67,8 @@ export class ProduitService {
     const url = `${environment.apiURL}/prodsByName/${nom}`;
     return this.http.get<Produit[]>(url);
   }
+
+  ajouterCategorie(cat: Categorie): Observable<Categorie> {
+    return this.http.post<Categorie>(environment.apiURLCat, cat, httpOptions);
+  }
 }
