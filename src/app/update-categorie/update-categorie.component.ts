@@ -14,6 +14,9 @@ export class UpdateCategorieComponent implements OnInit {
   @Input() // veut dire que la valeur de categorie est transmise par le composant parent
   categorie!: Categorie;
 
+  @Input()
+  ajout!: boolean;
+
   @Output() // veut dire que la valeur de categorieUpdated est émise par le composant enfant vers le composant parent
   categorieUpdated = new EventEmitter<Categorie>();
 

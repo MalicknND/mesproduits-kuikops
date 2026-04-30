@@ -1,7 +1,8 @@
 <form>
-  <div>
+  <div [hidden]="ajout">
     <label>ID Catégorie</label>
     <input
+      [readOnly]="!ajout"
       type="text"
       [(ngModel)]="categorie.idCat"
       name="idCategorie"
@@ -25,7 +26,7 @@
       class="btn btn-success"
       (click)="saveCategorie()"
     >
-      Ajouter
+      {{ ajout ? "Ajouter" : "Modifier" }}
     </button>
   </div>
 </form>

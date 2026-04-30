@@ -14,6 +14,7 @@ import { CommonModule } from '@angular/common';
 export class ListeCategoriesComponent implements OnInit {
   categories!: Categorie[];
   updatedCat: Categorie = { idCat: null, nomCat: '' };
+  ajout: boolean = true;
 
   constructor(private produitService: ProduitService) {}
 
@@ -37,5 +38,6 @@ export class ListeCategoriesComponent implements OnInit {
 
   updateCat(cat: Categorie) {
     this.updatedCat = { ...cat };
+    this.ajout = false;
   }
 }
