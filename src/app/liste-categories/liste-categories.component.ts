@@ -13,6 +13,8 @@ import { CommonModule } from '@angular/common';
 })
 export class ListeCategoriesComponent implements OnInit {
   categories!: Categorie[];
+  updatedCat: Categorie = { idCat: 0, nomCat: '' };
+
   constructor(private produitService: ProduitService) {}
 
   ngOnInit(): void {
