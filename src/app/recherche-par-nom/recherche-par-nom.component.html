@@ -21,7 +21,7 @@
   </form> -->
 
   <!-- Recherche produit par nom en tapant -->
-  <form class="form-inline">
+  <!-- <form class="form-inline">
     <div class="form-group mx-sm-3 mb-2 mt-2">
       <label>Nom Produit en tapant</label>
       <input
@@ -30,7 +30,21 @@
         (keyup)="onKeyUp(searchTerm.value)"
       />
     </div>
+  </form> -->
+
+  <!-- Rechercher par nom de produit en utilisant un pipe-->
+  <form class="form-inline">
+    <div class="form-group mx-sm-3 mb-2 mt-2">
+      <label>Nom Produit en tapant</label>
+      <input
+        #nom
+        [(ngModel)]="searchTerm"
+        name="searchTerm"
+        class="form-control"
+      />
+    </div>
   </form>
+
   <div class="card shadow mb-4">
     <div class="card-body">
       <table class="table table-striped">
@@ -41,7 +55,10 @@
           <th>Date Création</th>
           <th>Catégorie</th>
         </tr>
-        @for (produit of produits; track produit.idProduit) {
+        @for (
+          produit of produits | searchFilter: searchTerm;
+          track produit.idProduit
+        ) {
           <tbody>
             <tr>
               <td>{{ produit.idProduit }}</td>

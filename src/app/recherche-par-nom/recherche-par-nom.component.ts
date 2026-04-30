@@ -3,11 +3,12 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import type { Produit } from '../model/produit.model';
 import { ProduitService } from '../services/produit.service';
+import { SearchFilterPipe } from '../search-filter.pipe';
 
 @Component({
   selector: 'app-recherche-par-nom',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, SearchFilterPipe],
   templateUrl: './recherche-par-nom.component.html',
   styles: ``,
 })
@@ -21,11 +22,16 @@ export class RechercheParNomComponent implements OnInit {
   ngOnInit(): void {
     // ne pas charger les produits au début, mais seulement après la saisie du nom du produit à rechercher (pour la recherche par nom)
     // this.produits = [];
+    // charger tous les produits pour pouvoir faire la recherche par nom dans le tableau des produits chargés
+    // this.produitService.listeProduits().subscribe((prods) => {
+    //   console.log(prods);
+    //   this.allProduits = prods;
+    // });
 
     // charger tous les produits pour pouvoir faire la recherche par nom dans le tableau des produits chargés
     this.produitService.listeProduits().subscribe((prods) => {
       console.log(prods);
-      this.allProduits = prods;
+      this.produits = prods; // afficher tous les produits au début
     });
   }
 
