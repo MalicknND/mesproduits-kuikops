@@ -50,4 +50,18 @@ export class AuthService implements OnInit {
     if (!this.roles) return false;
     return this.roles.indexOf('ADMIN') > -1;
   }
+
+  setLoggedUserFromLocalStorage(login: string) {
+    this.loggedUser = login;
+    this.isloggedIn = true;
+    this.getUserRoles(login);
+  }
+
+  getUserRoles(username: string) {
+    this.users.forEach((curUser) => {
+      if (curUser.username == username) {
+        this.roles = curUser.roles;
+      }
+    });
+  }
 }
