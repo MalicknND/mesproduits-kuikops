@@ -6,14 +6,21 @@ import { RechercheParCategorieComponent } from './recherche-par-categorie/recher
 import { RechercheParNomComponent } from './recherche-par-nom/recherche-par-nom.component';
 import { ListeCategoriesComponent } from './liste-categories/liste-categories.component';
 import { LoginComponent } from './login/login.component';
+import { ForbiddenComponent } from './forbidden/forbidden.component';
+import { produitGuard } from './produit.guard';
 
 export const routes: Routes = [
   { path: 'produits', component: ProduitsComponent },
-  { path: 'add-produit', component: AddProduitComponent },
+  {
+    path: 'add-produit',
+    component: AddProduitComponent,
+    canActivate: [produitGuard],
+  },
   { path: 'updateProduit/:id', component: UpdateProduitComponent },
   { path: 'rechercheParCategorie', component: RechercheParCategorieComponent },
   { path: 'rechercheParNom', component: RechercheParNomComponent },
   { path: 'listeCategories', component: ListeCategoriesComponent },
+  { path: 'app-forbidden', component: ForbiddenComponent },
   { path: 'login', component: LoginComponent },
   { path: '', redirectTo: 'produits', pathMatch: 'full' },
 ];
