@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Categorie } from '../model/categorie.model';
 import { ProduitService } from '../services/produit.service';
+import { UpdateCategorieComponent } from '../update-categorie/update-categorie.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-liste-categories',
   standalone: true,
-  imports: [],
+  imports: [UpdateCategorieComponent, CommonModule],
   templateUrl: './liste-categories.component.html',
   styles: ``,
 })
