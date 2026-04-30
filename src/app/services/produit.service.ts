@@ -13,40 +13,10 @@ const httpOptions = {
   providedIn: 'root',
 })
 export class ProduitService {
-  // apiURL: string = 'http://localhost:8081/produits/api';
-  produits: Produit[]; //un tableau de Produit
+  produits!: Produit[]; //un tableau de Produit
   // categories: Categorie[];
 
-  constructor(private http: HttpClient) {
-    // this.categories = [
-    //   { idCat: 1, nomCat: 'PC' },
-    //   { idCat: 2, nomCat: 'Imprimante' },
-    // ];
-
-    this.produits = [
-      // {
-      //   idProduit: 1,
-      //   nomProduit: 'PC Asus',
-      //   prixProduit: 3000.6,
-      //   dateCreation: new Date('01/14/2011'),
-      //   categorie: { idCat: 1, nomCat: 'PC' },
-      // },
-      // {
-      //   idProduit: 2,
-      //   nomProduit: 'Imprimante Epson',
-      //   prixProduit: 450,
-      //   dateCreation: new Date('12/17/2010'),
-      //   categorie: { idCat: 2, nomCat: 'Imprimante' },
-      // },
-      // {
-      //   idProduit: 3,
-      //   nomProduit: 'Tablette Samsung',
-      //   prixProduit: 900.123,
-      //   dateCreation: new Date('02/20/2020'),
-      //   categorie: { idCat: 1, nomCat: 'PC' },
-      // },
-    ];
-  }
+  constructor(private http: HttpClient) {}
 
   listeProduits(): Observable<Produit[]> {
     return this.http.get<Produit[]>(environment.apiURL);
