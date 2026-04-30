@@ -14,14 +14,19 @@ import { ProduitService } from '../services/produit.service';
 export class RechercheParNomComponent implements OnInit {
   produits!: Produit[]; //un tableau de Produit
   nomProduit!: string;
+  allProduits!: Produit[];
+  searchTerm!: string;
 
   constructor(private produitService: ProduitService) {}
   ngOnInit(): void {
-    // this.produitService.listeProduits().subscribe((prods) => {
-    //   console.log(prods);
-    //   this.produits = prods;
-    // });
-    this.produits = [];
+    // ne pas charger les produits au début, mais seulement après la saisie du nom du produit à rechercher (pour la recherche par nom)
+    // this.produits = [];
+
+    // charger tous les produits pour pouvoir faire la recherche par nom dans le tableau des produits chargés
+    this.produitService.listeProduits().subscribe((prods) => {
+      console.log(prods);
+      this.allProduits = prods;
+    });
   }
 
   rechercherProds() {
@@ -37,5 +42,11 @@ export class RechercheParNomComponent implements OnInit {
         this.produits = prods;
       });
     }
+  }
+
+  onKeyUp(filterText: string) {
+    this.produits = this.allProduits.filter((prod) =>
+      prod.nomProduit.toLowerCase().includes(filterText.toLowerCase()),
+    );
   }
 }
