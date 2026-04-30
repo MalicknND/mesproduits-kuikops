@@ -23,18 +23,20 @@
                 <td>'PAS DE CATEGORIE'</td>
               }
 
-              <td>
-                <a class="btn btn-danger" (click)="supprimerProduit(produit)"
-                  >Supprimer</a
-                >
-              </td>
-              <td>
-                <a
-                  class="btn btn-success"
-                  [routerLink]="['/updateProduit', produit.idProduit]"
-                  >Modifier</a
-                >
-              </td>
+              @if (authService.isAdmin()) {
+                <td>
+                  <a class="btn btn-danger" (click)="supprimerProduit(produit)"
+                    >Supprimer</a
+                  >
+                </td>
+                <td>
+                  <a
+                    class="btn btn-success"
+                    [routerLink]="['/updateProduit', produit.idProduit]"
+                    >Modifier</a
+                  >
+                </td>
+              }
             </tr>
           </tbody>
         }

@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Produit } from '../model/produit.model';
 import { ProduitService } from '../services/produit.service';
 import { RouterLink } from '@angular/router';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-produits',
@@ -13,7 +14,10 @@ import { RouterLink } from '@angular/router';
 })
 export class ProduitsComponent implements OnInit {
   produits!: Produit[]; //un tableau de Produit
-  constructor(private produitService: ProduitService) {
+  constructor(
+    private produitService: ProduitService,
+    public authService: AuthService,
+  ) {
     // this.produits = produitService.listeProduits();
   }
 

@@ -11,7 +11,7 @@ export class AuthService implements OnInit {
     { username: 'malick', password: '123', roles: ['USER'] },
   ];
   public loggedUser!: string;
-  public isLoggedIn: boolean = false;
+  public isloggedIn: boolean = false;
   public roles!: string[];
 
   constructor(private router: Router) {}
@@ -27,10 +27,10 @@ export class AuthService implements OnInit {
       ) {
         validUser = true;
         this.loggedUser = curUser.username;
-        this.isLoggedIn = true;
+        this.isloggedIn = true;
         this.roles = curUser.roles;
         localStorage.setItem('loggedUser', this.loggedUser);
-        localStorage.setItem('isLoggedIn', String(this.isLoggedIn));
+        localStorage.setItem('isloggedIn', String(this.isloggedIn));
       }
     });
 
@@ -38,12 +38,16 @@ export class AuthService implements OnInit {
   }
 
   logout() {
-    this.isLoggedIn = false;
+    this.isloggedIn = false;
     this.loggedUser = undefined!;
     this.roles = undefined!;
     localStorage.removeItem('loggedUser');
-    localStorage.removeItem('isLoggedIn');
-    localStorage.removeItem('roles');
+    localStorage.setItem('isloggedIn', String(this.isloggedIn));
     this.router.navigate(['/login']);
+  }
+
+  isAdmin(): boolean {
+    if (!this.roles) return false;
+    return this.roles.indexOf('ADMIN') > -1;
   }
 }
