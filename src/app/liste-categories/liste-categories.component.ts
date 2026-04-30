@@ -34,4 +34,8 @@ export class ListeCategoriesComponent implements OnInit {
       this.categories = cats._embedded.categories;
     });
   }
+
+  updateCat(cat: Categorie) {
+    this.updatedCat = { ...cat };
+  }
 }

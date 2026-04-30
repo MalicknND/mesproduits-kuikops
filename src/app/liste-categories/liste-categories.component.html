@@ -20,6 +20,9 @@
             <tr>
               <td>{{ cat.idCat }}</td>
               <td>{{ cat.nomCat }}</td>
+              <td>
+                <a class="btn btn-success" (click)="updateCat(cat)">Editer</a>
+              </td>
             </tr>
           </tbody>
         }
