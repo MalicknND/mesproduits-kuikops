@@ -23,13 +23,11 @@ export class ProduitsComponent implements OnInit {
 
   chargerProduits() {
     this.produitService.listeProduits().subscribe((prods) => {
-      console.log(prods);
       this.produits = prods;
     });
   }
 
   supprimerProduit(p: Produit) {
-    // console.log(p);
     let conf = confirm('Etes-vous sûr ?');
     if (conf)
       this.produitService.supprimerProduit(p.idProduit).subscribe(() => {
