@@ -53,16 +53,13 @@ export class ProduitService {
     return this.http.put<Produit>(environment.apiURL, prod, httpOptions);
   }
 
-  // listeCategories(): Observable<Categorie[]> {
-  //   return this.http.get<Categorie[]>(`${environment.apiURL}/cat`);
-  // }
-
   // la nouvelle version de la méthode listeCategories() qui utilise CategorieWrapper pour récupérer la liste des catégories à partir de l'API REST (Spring Data RESR)
   listeCategories(): Observable<CategorieWrapper> {
     return this.http.get<CategorieWrapper>(environment.apiURLCat);
   }
 
-  // consulterCategorie(id: number): Categorie {
-  //   return this.categories.find((cat) => cat.idCat == id)!;
-  // }
+  rechercherParCategorie(idCat: number): Observable<Produit[]> {
+    const url = `${environment.apiURL}/prodscat/${idCat}`;
+    return this.http.get<Produit[]>(url);
+  }
 }
