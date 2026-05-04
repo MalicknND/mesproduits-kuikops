@@ -17,7 +17,7 @@ const httpOptions = {
 export class ProduitService {
   produits!: Produit[]; //un tableau de Produit
   // categories: Categorie[];
-  apiURL: string = 'http://localhost:8081/produits/api';
+  // apiURL: string = 'http://localhost:8081/produits/api';
 
   constructor(
     private http: HttpClient,
@@ -28,23 +28,33 @@ export class ProduitService {
     let jwt = this.authService.getToken();
     jwt = 'Bearer ' + jwt;
     let httpHeaders = new HttpHeaders({ Authorization: jwt });
-    return this.http.get<Produit[]>(this.apiURL + '/all', {
+    return this.http.get<Produit[]>(environment.apiURL + '/all', {
+      headers: httpHeaders,
+    });
+  }
+  ajouterProduit(prod: Produit): Observable<Produit> {
+    let jwt = this.authService.getToken();
+    jwt = 'Bearer ' + jwt;
+    let httpHeaders = new HttpHeaders({ Authorization: jwt });
+    return this.http.post<Produit>(environment.apiURL + '/addprod', prod, {
       headers: httpHeaders,
     });
   }
 
-  ajouterProduit(prod: Produit): Observable<Produit> {
-    return this.http.post<Produit>(environment.apiURL, prod, httpOptions);
-  }
-
   supprimerProduit(id: number) {
-    const url = `${environment.apiURL}/${id}`;
-    return this.http.delete(url, httpOptions);
+    const url = `${environment.apiURL}/delprod/${id}`;
+    let jwt = this.authService.getToken();
+    jwt = 'Bearer ' + jwt;
+    let httpHeaders = new HttpHeaders({ Authorization: jwt });
+    return this.http.delete(url, { headers: httpHeaders });
   }
 
   consulterProduit(id: number): Observable<Produit> {
-    const url = `${environment.apiURL}/${id}`;
-    return this.http.get<Produit>(url);
+    const url = `${environment.apiURL}/getById/${id}`;
+    let jwt = this.authService.getToken();
+    jwt = 'Bearer ' + jwt;
+    let httpHeaders = new HttpHeaders({ Authorization: jwt });
+    return this.http.get<Produit>(url, { headers: httpHeaders });
   }
 
   trierProduits() {
@@ -60,12 +70,22 @@ export class ProduitService {
   }
 
   updateProduit(prod: Produit): Observable<Produit> {
-    return this.http.put<Produit>(environment.apiURL, prod, httpOptions);
+    let jwt = this.authService.getToken();
+    jwt = 'Bearer ' + jwt;
+    let httpHeaders = new HttpHeaders({ Authorization: jwt });
+    return this.http.put<Produit>(environment.apiURL + '/updateprod', prod, {
+      headers: httpHeaders,
+    });
   }
 
   // la nouvelle version de la méthode listeCategories() qui utilise CategorieWrapper pour récupérer la liste des catégories à partir de l'API REST (Spring Data RESR)
   listeCategories(): Observable<CategorieWrapper> {
-    return this.http.get<CategorieWrapper>(environment.apiURLCat);
+    let jwt = this.authService.getToken();
+    jwt = 'Bearer ' + jwt;
+    let httpHeaders = new HttpHeaders({ Authorization: jwt });
+    return this.http.get<CategorieWrapper>(environment.apiURLCat, {
+      headers: httpHeaders,
+    });
   }
 
   rechercherParCategorie(idCat: number): Observable<Produit[]> {
