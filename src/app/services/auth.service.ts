@@ -77,6 +77,10 @@ export class AuthService implements OnInit {
     // this.getUserRoles(login);
   }
 
+  isTokenExpired(): Boolean {
+    return this.jwtHelper.isTokenExpired(this.token);
+  }
+
   // getUserRoles(username: string) {
   //   this.users.forEach((curUser) => {
   //     if (curUser.username == username) {
