@@ -3,8 +3,9 @@ import { Produit } from '../model/produit.model';
 import { Categorie } from '../model/categorie.model';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import type { CategorieWrapper } from '../model/categorieWrapped.model';
+import { CategorieWrapper } from '../model/categorieWrapped.model';
 import { environment } from '../../environments/environment.development';
+import { AuthService } from './auth.service';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
@@ -16,11 +17,20 @@ const httpOptions = {
 export class ProduitService {
   produits!: Produit[]; //un tableau de Produit
   // categories: Categorie[];
+  apiURL: string = 'http://localhost:8081/produits/api';
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private authService: AuthService,
+  ) {}
 
   listeProduits(): Observable<Produit[]> {
-    return this.http.get<Produit[]>(environment.apiURL);
+    let jwt = this.authService.getToken();
+    jwt = 'Bearer ' + jwt;
+    let httpHeaders = new HttpHeaders({ Authorization: jwt });
+    return this.http.get<Produit[]>(this.apiURL + '/all', {
+      headers: httpHeaders,
+    });
   }
 
   ajouterProduit(prod: Produit): Observable<Produit> {

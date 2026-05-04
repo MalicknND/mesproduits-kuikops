@@ -2,6 +2,7 @@ import { Injectable, OnInit } from '@angular/core';
 import { User } from '../model/user.model';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable({
   providedIn: 'root',
@@ -18,6 +19,8 @@ export class AuthService implements OnInit {
   public isloggedIn: boolean = false;
   public roles!: string[];
 
+  private jwtHelper = new JwtHelperService();
+
   constructor(
     private router: Router,
     private http: HttpClient,
@@ -32,25 +35,40 @@ export class AuthService implements OnInit {
     localStorage.setItem('jwt', jwt);
     this.token = jwt;
     this.isloggedIn = true;
+    this.decodeJWT();
   }
   getToken(): string {
     return this.token;
   }
 
+  decodeJWT() {
+    if (this.token == undefined) return;
+    const decodedToken = this.jwtHelper.decodeToken(this.token);
+    this.roles = decodedToken.roles;
+    this.loggedUser = decodedToken.sub;
+    {
+    }
+  }
+
+  loadToken() {
+    this.token = localStorage.getItem('jwt')!;
+    this.decodeJWT();
+  }
+
   ngOnInit(): void {}
 
   logout() {
-    this.isloggedIn = false;
     this.loggedUser = undefined!;
     this.roles = undefined!;
-    localStorage.removeItem('loggedUser');
-    localStorage.setItem('isloggedIn', String(this.isloggedIn));
+    this.token = undefined!;
+    this.isloggedIn = false;
+    localStorage.removeItem('jwt');
     this.router.navigate(['/login']);
   }
 
   isAdmin(): boolean {
     if (!this.roles) return false;
-    return this.roles.indexOf('ADMIN') > -1;
+    return this.roles.indexOf('ADMIN') >= 0;
   }
 
   setLoggedUserFromLocalStorage(login: string) {
