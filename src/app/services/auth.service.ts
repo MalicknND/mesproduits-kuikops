@@ -88,4 +88,9 @@ export class AuthService implements OnInit {
   //     }
   //   });
   // }
+  registerUser(user: User) {
+    return this.http.post<User>(this.apiURL + '/register', user, {
+      observe: 'response',
+    });
+  }
 }
