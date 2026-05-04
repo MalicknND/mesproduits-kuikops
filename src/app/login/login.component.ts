@@ -23,30 +23,30 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  onLoggedin(): void {
-    this.authService.login(this.user).subscribe(
-      (data) => {
-        let jwt = data.headers.get('Authorization')!;
-        this.authService.saveToken(jwt);
-        this.router.navigate(['/']);
-      },
-      (erreur) => {
-        this.err = 1;
-      },
-    );
-  }
-
-  // La version avec la méthode subscribe modifiée
-  // onLoggedin() {
-  //   this.authService.login(this.user).subscribe({
-  //     next: (data) => {
-  //       let jwToken = data.headers.get('Authorization')!;
-  //       this.authService.saveToken(jwToken);
+  // onLoggedin(): void {
+  //   this.authService.login(this.user).subscribe(
+  //     (data) => {
+  //       let jwt = data.headers.get('Authorization')!;
+  //       this.authService.saveToken(jwt);
   //       this.router.navigate(['/']);
   //     },
-  //     error: (err: any) => {
+  //     (erreur) => {
   //       this.err = 1;
   //     },
-  //   });
+  //   );
   // }
+
+  // La version avec la méthode subscribe modifiée
+  onLoggedin() {
+    this.authService.login(this.user).subscribe({
+      next: (data) => {
+        let jwToken = data.headers.get('Authorization')!;
+        this.authService.saveToken(jwToken);
+        this.router.navigate(['/']);
+      },
+      error: (err: any) => {
+        this.err = 1;
+      },
+    });
+  }
 }
