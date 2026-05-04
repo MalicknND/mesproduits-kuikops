@@ -25,36 +25,20 @@ export class ProduitService {
   ) {}
 
   listeProduits(): Observable<Produit[]> {
-    let jwt = this.authService.getToken();
-    jwt = 'Bearer ' + jwt;
-    let httpHeaders = new HttpHeaders({ Authorization: jwt });
-    return this.http.get<Produit[]>(environment.apiURL + '/all', {
-      headers: httpHeaders,
-    });
+    return this.http.get<Produit[]>(environment.apiURL + '/all');
   }
   ajouterProduit(prod: Produit): Observable<Produit> {
-    let jwt = this.authService.getToken();
-    jwt = 'Bearer ' + jwt;
-    let httpHeaders = new HttpHeaders({ Authorization: jwt });
-    return this.http.post<Produit>(environment.apiURL + '/addprod', prod, {
-      headers: httpHeaders,
-    });
+    return this.http.post<Produit>(environment.apiURL + '/addprod', prod);
   }
 
   supprimerProduit(id: number) {
     const url = `${environment.apiURL}/delprod/${id}`;
-    let jwt = this.authService.getToken();
-    jwt = 'Bearer ' + jwt;
-    let httpHeaders = new HttpHeaders({ Authorization: jwt });
-    return this.http.delete(url, { headers: httpHeaders });
+    return this.http.delete(url);
   }
 
   consulterProduit(id: number): Observable<Produit> {
     const url = `${environment.apiURL}/getById/${id}`;
-    let jwt = this.authService.getToken();
-    jwt = 'Bearer ' + jwt;
-    let httpHeaders = new HttpHeaders({ Authorization: jwt });
-    return this.http.get<Produit>(url, { headers: httpHeaders });
+    return this.http.get<Produit>(url);
   }
 
   trierProduits() {
@@ -70,22 +54,12 @@ export class ProduitService {
   }
 
   updateProduit(prod: Produit): Observable<Produit> {
-    let jwt = this.authService.getToken();
-    jwt = 'Bearer ' + jwt;
-    let httpHeaders = new HttpHeaders({ Authorization: jwt });
-    return this.http.put<Produit>(environment.apiURL + '/updateprod', prod, {
-      headers: httpHeaders,
-    });
+    return this.http.put<Produit>(environment.apiURL + '/updateprod', prod);
   }
 
   // la nouvelle version de la méthode listeCategories() qui utilise CategorieWrapper pour récupérer la liste des catégories à partir de l'API REST (Spring Data RESR)
   listeCategories(): Observable<CategorieWrapper> {
-    let jwt = this.authService.getToken();
-    jwt = 'Bearer ' + jwt;
-    let httpHeaders = new HttpHeaders({ Authorization: jwt });
-    return this.http.get<CategorieWrapper>(environment.apiURLCat, {
-      headers: httpHeaders,
-    });
+    return this.http.get<CategorieWrapper>(environment.apiURLCat);
   }
 
   rechercherParCategorie(idCat: number): Observable<Produit[]> {
