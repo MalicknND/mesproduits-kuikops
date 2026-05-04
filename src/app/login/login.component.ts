@@ -14,7 +14,7 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
   user = new User();
-  erreur: boolean = false;
+  err: number = 0;
 
   constructor(
     private authService: AuthService,
@@ -24,12 +24,29 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {}
 
   onLoggedin(): void {
-    console.log(this.user);
-    let isValidUser: boolean = this.authService.signIn(this.user);
-    if (isValidUser) {
-      this.router.navigate(['/']);
-    } else {
-      this.erreur = true;
-    }
+    this.authService.login(this.user).subscribe(
+      (data) => {
+        let jwt = data.headers.get('Authorization')!;
+        this.authService.saveToken(jwt);
+        this.router.navigate(['/']);
+      },
+      (erreur) => {
+        this.err = 1;
+      },
+    );
   }
+
+  // La version avec la méthode subscribe modifiée
+  // onLoggedin() {
+  //   this.authService.login(this.user).subscribe({
+  //     next: (data) => {
+  //       let jwToken = data.headers.get('Authorization')!;
+  //       this.authService.saveToken(jwToken);
+  //       this.router.navigate(['/']);
+  //     },
+  //     error: (err: any) => {
+  //       this.err = 1;
+  //     },
+  //   });
+  // }
 }

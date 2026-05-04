@@ -1,41 +1,43 @@
 import { Injectable, OnInit } from '@angular/core';
 import { User } from '../model/user.model';
 import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService implements OnInit {
-  users: User[] = [
-    { username: 'admin', password: '123', roles: ['ADMIN'] },
-    { username: 'malick', password: '123', roles: ['USER'] },
-  ];
+  // users: User[] = [
+  //   { username: 'admin', password: '123', roles: ['ADMIN'] },
+  //   { username: 'malick', password: '123', roles: ['USER'] },
+  // ];
+  apiURL: string = 'http://localhost:8082/users';
+  token!: string;
+
   public loggedUser!: string;
   public isloggedIn: boolean = false;
   public roles!: string[];
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private http: HttpClient,
+  ) {}
+
+  login(user: User) {
+    return this.http.post<User>(this.apiURL + '/login', user, {
+      observe: 'response',
+    });
+  }
+  saveToken(jwt: string) {
+    localStorage.setItem('jwt', jwt);
+    this.token = jwt;
+    this.isloggedIn = true;
+  }
+  getToken(): string {
+    return this.token;
+  }
 
   ngOnInit(): void {}
-
-  signIn(user: User): boolean {
-    let validUser: boolean = false;
-    this.users.forEach((curUser) => {
-      if (
-        user.username === curUser.username &&
-        user.password === curUser.password
-      ) {
-        validUser = true;
-        this.loggedUser = curUser.username;
-        this.isloggedIn = true;
-        this.roles = curUser.roles;
-        localStorage.setItem('loggedUser', this.loggedUser);
-        localStorage.setItem('isloggedIn', String(this.isloggedIn));
-      }
-    });
-
-    return validUser;
-  }
 
   logout() {
     this.isloggedIn = false;
@@ -54,14 +56,14 @@ export class AuthService implements OnInit {
   setLoggedUserFromLocalStorage(login: string) {
     this.loggedUser = login;
     this.isloggedIn = true;
-    this.getUserRoles(login);
+    // this.getUserRoles(login);
   }
 
-  getUserRoles(username: string) {
-    this.users.forEach((curUser) => {
-      if (curUser.username == username) {
-        this.roles = curUser.roles;
-      }
-    });
-  }
+  // getUserRoles(username: string) {
+  //   this.users.forEach((curUser) => {
+  //     if (curUser.username == username) {
+  //       this.roles = curUser.roles;
+  //     }
+  //   });
+  // }
 }
