@@ -6,7 +6,7 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
 import { User } from '../model/user.model';
 import { AuthService } from '../services/auth.service';
 
@@ -25,6 +25,7 @@ export class RegisterComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -39,11 +40,14 @@ export class RegisterComponent implements OnInit {
   onRegister() {
     this.authService.registerUser(this.user).subscribe({
       next: (res) => {
+        this.authService.setRegistredUser(this.user);
+        alert('veillez confirmer votre email');
+        this.router.navigate(['/verifEmail']);
         alert('veillez confirmer votre email');
         // this.router.navigate(["/verifEmail",this.user.email]);
       },
       error: (err: any) => {
-        if ((err.status = 400)) {
+        if (err.status === 400) {
           this.err = err.error.message;
         }
       },

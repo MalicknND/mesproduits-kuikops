@@ -21,10 +21,20 @@ export class AuthService implements OnInit {
 
   private jwtHelper = new JwtHelperService();
 
+  public registeredUser: User = new User();
+
   constructor(
     private router: Router,
     private http: HttpClient,
   ) {}
+
+  setRegistredUser(user: User) {
+    this.registeredUser = user;
+  }
+
+  getRegisteredUser(): User {
+    return this.registeredUser;
+  }
 
   login(user: User) {
     return this.http.post<User>(this.apiURL + '/login', user, {
@@ -92,5 +102,9 @@ export class AuthService implements OnInit {
     return this.http.post<User>(this.apiURL + '/register', user, {
       observe: 'response',
     });
+  }
+
+  validateEmail(code: string) {
+    return this.http.get<User>(this.apiURL + '/verifyEmail/' + code);
   }
 }

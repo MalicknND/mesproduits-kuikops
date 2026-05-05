@@ -9,6 +9,7 @@ import { LoginComponent } from './login/login.component';
 import { ForbiddenComponent } from './forbidden/forbidden.component';
 import { produitGuard } from './produit.guard';
 import { RegisterComponent } from './register/register.component';
+import { VerifEmailComponent } from './verif-email/verif-email.component';
 
 export const routes: Routes = [
   { path: 'produits', component: ProduitsComponent },
@@ -24,5 +25,6 @@ export const routes: Routes = [
   { path: 'app-forbidden', component: ForbiddenComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
+  { path: 'verifEmail', component: VerifEmailComponent },
   { path: '', redirectTo: 'produits', pathMatch: 'full' },
 ];
