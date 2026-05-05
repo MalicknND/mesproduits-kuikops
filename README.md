@@ -1,53 +1,61 @@
 # Mes Produits
 
-Application Angular 18 de gestion de produits.
+Application Angular 18 de gestion de produits avec authentification JWT, gestion des categories et recherche.
 
-Ce projet permet de :
-- lister les produits
-- ajouter un produit
-- modifier un produit
-- supprimer un produit
+## Fonctionnalites
 
-L'interface est construite avec Angular et Bootstrap, et les donnees sont recuperees via une API REST disponible en local sur `http://localhost:8081/produits/api`.
+- Lister les produits
+- Ajouter un produit
+- Modifier un produit
+- Supprimer un produit
+- Rechercher des produits par nom
+- Rechercher des produits par categorie
+- Lister et ajouter des categories
+- Se connecter avec un compte utilisateur
+- Creer un compte utilisateur
+- Verifier une adresse email avec un code de validation
+- Proteger certaines actions avec un role `ADMIN`
 
-## Apercu du projet
+## Technologies
 
-L'application contient 3 ecrans principaux :
-- `produits` : affiche la liste des produits
-- `add-produit` : formulaire d'ajout
-- `updateProduit/:id` : formulaire de modification
-
-Chaque produit contient les informations suivantes :
-- `idProduit`
-- `nomProduit`
-- `prixProduit`
-- `dateCreation`
+- Angular 18
+- TypeScript
+- Bootstrap 5
+- RxJS
+- Auth0 Angular JWT
+- ngx-toastr
+- Karma / Jasmine
 
 ## Prerequis
 
-Avant de lancer le projet, il faut avoir :
-- `Node.js` installe
-- `npm` installe
-- Angular CLI disponible via `npx` ou installe globalement
-- une API backend demarree sur `http://localhost:8081`
+Avant de lancer le projet, installez :
+
+- Node.js
+- npm
+- Angular CLI, via `npx` ou en installation globale
+
+L'application depend aussi de deux services backend :
+
+- API produits/categories : `http://localhost:8081`
+- API utilisateurs/authentification : `http://localhost:8082`
 
 ## Installation
 
-Installer les dependances :
+Installez les dependances :
 
 ```bash
 npm install
 ```
 
-## Lancer le projet
+## Lancer l'application
 
-Demarrer le serveur de developpement :
+Demarrez le serveur de developpement :
 
 ```bash
 npm start
 ```
 
-Puis ouvrir :
+Puis ouvrez :
 
 ```text
 http://localhost:4200
@@ -55,87 +63,177 @@ http://localhost:4200
 
 ## Commandes utiles
 
-Lancer l'application en developpement :
-
 ```bash
 npm start
 ```
 
-Construire le projet :
+Lance l'application en developpement.
 
 ```bash
 npm run build
 ```
 
-Lancer les tests :
+Compile le projet dans le dossier `dist/`.
+
+```bash
+npm run watch
+```
+
+Compile automatiquement le projet en mode developpement.
 
 ```bash
 npm test
 ```
 
-## Fonctionnement de l'application
+Lance les tests unitaires avec Karma et Jasmine.
 
-### Liste des produits
+## Configuration des API
 
-La page d'accueil redirige vers la liste des produits. Cette page affiche :
-- l'identifiant
-- le nom
-- le prix
-- la date de creation
+Les URL du backend produits et categories sont configurees dans :
 
-Deux actions sont disponibles pour chaque ligne :
-- `Supprimer`
-- `Modifier`
+- `src/environments/environment.development.ts`
 
-### Ajout d'un produit
+Configuration actuelle :
 
-Le formulaire d'ajout permet de saisir :
-- le nom du produit
-- le prix
-- la date de creation
+```ts
+export const environment = {
+  apiURL: 'http://localhost:8081/produits/api',
+  apiURLCat: 'http://localhost:8081/produits/cat',
+};
+```
 
-L'identifiant est masque dans le formulaire et est en general gere par le backend.
+L'URL du backend utilisateurs est configuree dans :
 
-### Modification d'un produit
+- `src/app/services/auth.service.ts`
 
-Le formulaire de modification recharge un produit a partir de son identifiant dans l'URL, puis permet de modifier :
-- le nom
-- le prix
-- la date de creation
+Configuration actuelle :
+
+```ts
+apiURL: string = 'http://localhost:8082/users';
+```
+
+## Routes principales
+
+| Route | Description |
+| --- | --- |
+| `/produits` | Liste des produits |
+| `/add-produit` | Ajout d'un produit, reserve au role `ADMIN` |
+| `/updateProduit/:id` | Modification d'un produit |
+| `/rechercheParCategorie` | Recherche par categorie |
+| `/rechercheParNom` | Recherche par nom |
+| `/listeCategories` | Gestion des categories |
+| `/login` | Connexion |
+| `/register` | Creation de compte |
+| `/verifEmail` | Verification email |
+| `/app-forbidden` | Page d'acces interdit |
+
+La route racine `/` redirige vers `/produits`.
+
+## Backend attendu
+
+Le frontend ne stocke pas les donnees localement. Il consomme une API REST.
+
+### Produits
+
+Endpoints utilises par `ProduitService` :
+
+- `GET /produits/api/all`
+- `GET /produits/api/getById/{id}`
+- `POST /produits/api/addprod`
+- `PUT /produits/api/updateprod`
+- `DELETE /produits/api/delprod/{id}`
+- `GET /produits/api/prodscat/{idCat}`
+- `GET /produits/api/prodsByName/{nom}`
+
+### Categories
+
+Endpoints utilises par `ProduitService` :
+
+- `GET /produits/cat`
+- `POST /produits/cat`
+
+La liste des categories est recuperee via un wrapper compatible Spring Data REST.
+
+### Utilisateurs
+
+Endpoints utilises par `AuthService` :
+
+- `POST /users/login`
+- `POST /users/register`
+- `GET /users/verifyEmail/{code}`
+
+Apres connexion, le token JWT est conserve dans le `localStorage` sous la cle `jwt`.
+
+## Authentification et droits
+
+L'application utilise un token JWT pour identifier l'utilisateur connecte.
+
+Le service `AuthService` decode le token afin de recuperer :
+
+- le nom de l'utilisateur connecte
+- les roles de l'utilisateur
+- l'expiration du token
+
+La route `/add-produit` est protegee par `produitGuard`. Elle est accessible uniquement si l'utilisateur possede le role `ADMIN`. Sinon, l'utilisateur est redirige vers `/app-forbidden`.
+
+## Donnees principales
+
+### Produit
+
+Un produit contient :
+
+- `idProduit`
+- `nomProduit`
+- `prixProduit`
+- `dateCreation`
+- `categorie`
+
+### Categorie
+
+Une categorie contient :
+
+- `idCat`
+- `nomCat`
+
+### User
+
+Un utilisateur contient :
+
+- `username`
+- `password`
+- `roles`
+- `email`
+- `enabled`
 
 ## Structure du projet
 
-Voici les fichiers importants :
+Fichiers et dossiers importants :
 
-- `src/app/services/produit.service.ts` : appels HTTP vers l'API REST
-- `src/app/produits/` : affichage de la liste
-- `src/app/add-produit/` : ajout d'un produit
-- `src/app/update-produit/` : modification d'un produit
-- `src/app/model/` : modeles `Produit` et `Categorie`
-- `src/app/app.routes.ts` : routes de navigation
+- `src/app/app.routes.ts` : configuration des routes
+- `src/app/app.component.html` : barre de navigation principale
+- `src/app/services/produit.service.ts` : appels HTTP produits et categories
+- `src/app/services/auth.service.ts` : connexion, inscription, JWT et verification email
+- `src/app/services/token.interceptor.ts` : ajout du token aux requetes HTTP
+- `src/app/produit.guard.ts` : protection des routes reservees aux administrateurs
+- `src/app/produits/` : liste des produits
+- `src/app/add-produit/` : formulaire d'ajout de produit
+- `src/app/update-produit/` : formulaire de modification de produit
+- `src/app/recherche-par-categorie/` : recherche par categorie
+- `src/app/recherche-par-nom/` : recherche par nom
+- `src/app/liste-categories/` : gestion des categories
+- `src/app/login/` : connexion
+- `src/app/register/` : inscription
+- `src/app/verif-email/` : verification email
+- `src/app/model/` : modeles de donnees
 
-## Point important sur le backend
+## Documentation
 
-Cette application frontend ne stocke pas les donnees toute seule. Elle depend d'un backend qui doit exposer les routes REST compatibles avec :
-
-- `GET /produits/api`
-- `GET /produits/api/{id}`
-- `POST /produits/api`
-- `PUT /produits/api`
-- `DELETE /produits/api/{id}`
-
-Si le backend n'est pas demarre, la liste des produits et les formulaires ne fonctionneront pas correctement.
-
-## Documentation debutant
-
-Un guide simple pas a pas est disponible ici :
+Un guide debutant est disponible ici :
 
 - `docs/guide-debutant.md`
 
-## Technologies utilisees
+## Notes de developpement
 
-- Angular 18
-- TypeScript
-- Bootstrap 5
-- RxJS
-- Karma / Jasmine
+Si la liste des produits, la connexion ou les formulaires ne fonctionnent pas, verifiez d'abord que les backends sont demarres sur les bons ports.
+
+En cas d'erreur d'autorisation, verifiez aussi que le token JWT contient bien le role attendu, par exemple `ADMIN` pour l'ajout de produit.
