@@ -41,11 +41,10 @@ export class VerifEmailComponent implements OnInit {
         });
       },
       error: (err: any) => {
-        if (err.status === 400) {
-          this.err = err.error?.message ?? 'Erreur inconnue';
-        } else {
-          this.err = err.error?.message ?? 'Erreur serveur';
+        if (err.error.errorCode == 'INVALID_TOKEN') {
+          this.err = 'Code invalide!';
         }
+        if (err.error.errorCode == 'EXPIRED_TOKEN') this.err = 'Code a expiré!';
         console.log(err.errorCode);
       },
     });
