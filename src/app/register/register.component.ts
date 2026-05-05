@@ -9,6 +9,7 @@ import {
 import { RouterLink, Router } from '@angular/router';
 import { User } from '../model/user.model';
 import { AuthService } from '../services/auth.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-register',
@@ -21,11 +22,12 @@ export class RegisterComponent implements OnInit {
   confirmPassword!: string;
   myForm!: FormGroup;
   err: any;
-
+  loading: boolean = false;
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private router: Router,
+    private toastr: ToastrService,
   ) {}
 
   ngOnInit(): void {
@@ -38,15 +40,17 @@ export class RegisterComponent implements OnInit {
   }
 
   onRegister() {
+    this.loading = true;
     this.authService.registerUser(this.user).subscribe({
       next: (res) => {
         this.authService.setRegistredUser(this.user);
-        alert('veillez confirmer votre email');
+        this.loading = false;
+        this.toastr.success('veillez confirmer votre email', 'Confirmation');
         this.router.navigate(['/verifEmail']);
-        alert('veillez confirmer votre email');
         // this.router.navigate(["/verifEmail",this.user.email]);
       },
       error: (err: any) => {
+        this.loading = false;
         if (err.status === 400) {
           this.err = err.error.message;
         }
